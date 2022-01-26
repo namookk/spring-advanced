@@ -1,6 +1,7 @@
 package hello.advanced.trace.strategy;
 
 import hello.advanced.trace.strategy.code.strategy.ContextV1;
+import hello.advanced.trace.strategy.code.strategy.Strategy;
 import hello.advanced.trace.strategy.code.strategy.StrategyLogic1;
 import hello.advanced.trace.strategy.code.strategy.StrategyLogic2;
 import hello.advanced.trace.template.code.AbstractTemplate;
@@ -8,6 +9,8 @@ import hello.advanced.trace.template.code.SubClassLogic1;
 import hello.advanced.trace.template.code.SubClassLogic2;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
+
+import javax.naming.Context;
 
 @Slf4j
 public class ContextV1Test {
@@ -51,19 +54,50 @@ public class ContextV1Test {
 
     @Test
     void strategyV2() {
-        AbstractTemplate template1 = new AbstractTemplate() {
+        Strategy strategy1 = new Strategy() {
             @Override
-            protected void call() {
-                log.info("비지니스 로직1 실행!");
+            public void call() {
+                log.info("비지니스 로직1 실행");
             }
         };
-        template1.execute();
-        AbstractTemplate template2 = new AbstractTemplate() {
+        ContextV1 context1 = new ContextV1(strategy1);
+        context1.execute();
+
+        Strategy strategy2 = new Strategy() {
             @Override
-            protected void call() {
-                log.info("비지니스 로직2 실행!");
+            public void call() {
+                log.info("비지니스 로직2 실행");
             }
         };
-        template2.execute();
+        ContextV1 context2 = new ContextV1(strategy2);
+        context2.execute();
+    }
+
+    @Test
+    void strategyV3() {
+        ContextV1 context1 = new ContextV1(new Strategy() {
+            @Override
+            public void call() {
+                log.info("비지니스 로직1 실행");
+            }
+        });
+        context1.execute();
+
+        ContextV1 context2 = new ContextV1(new Strategy() {
+            @Override
+            public void call() {
+                log.info("비지니스 로직2 실행");
+            }
+        });
+        context2.execute();
+    }
+
+    @Test
+    void strategyV4() {
+        ContextV1 context1 = new ContextV1(() -> log.info("비지니스 로직1 실행"));
+        context1.execute();
+
+        ContextV1 context2 = new ContextV1(() -> log.info("비지니스 로직2 실행"));
+        context2.execute();
     }
 }
