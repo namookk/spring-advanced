@@ -1,22 +1,25 @@
-package hello.advanced.proxy.config.v1_proxy.interface_proxy;
+package hello.advanced.proxy.config.v2_proxy.concrete_proxy;
 
-import hello.advanced.proxy.app.v1.ProxyOrderServiceV1;
+import hello.advanced.proxy.app.v2.ProxyOrderRepositoryV2;
 import hello.advanced.trace.TraceStatus;
 import hello.advanced.trace.logtrace.LogTrace;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RequiredArgsConstructor
-public class OrderServiceInterfaceProxy implements ProxyOrderServiceV1 {
-    private final ProxyOrderServiceV1 target;
+public class OrderRepositoryConcreteProxy extends ProxyOrderRepositoryV2 {
+
+    private final ProxyOrderRepositoryV2 target;
     private final LogTrace logTrace;
 
     @Override
-    public void orderItem(String itemId) {
+    public void save(String itemId) {
         TraceStatus status = null;
         try{
-            status = logTrace.begin("OrderService.orderItem()");
+            status = logTrace.begin("OrderRepository.save()");
             //target호출
-            target.orderItem(itemId);
+            target.save(itemId);
             logTrace.end(status);
         }catch (Exception e){
             logTrace.exception(status, e);

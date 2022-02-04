@@ -1,14 +1,21 @@
-package hello.advanced.proxy.config.v1_proxy.interface_proxy;
+package hello.advanced.proxy.config.v2_proxy.concrete_proxy;
 
-import hello.advanced.proxy.app.v1.ProxyOrderServiceV1;
+import hello.advanced.proxy.app.v2.ProxyOrderServiceV2;
 import hello.advanced.trace.TraceStatus;
 import hello.advanced.trace.logtrace.LogTrace;
-import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
-@RequiredArgsConstructor
-public class OrderServiceInterfaceProxy implements ProxyOrderServiceV1 {
-    private final ProxyOrderServiceV1 target;
+@Slf4j
+public class OrderServiceConcreteProxy extends ProxyOrderServiceV2 {
+
+    private final ProxyOrderServiceV2 target;
     private final LogTrace logTrace;
+
+    public OrderServiceConcreteProxy(ProxyOrderServiceV2 target, LogTrace logTrace) {
+        super(null);
+        this.target = target;
+        this.logTrace = logTrace;
+    }
 
     @Override
     public void orderItem(String itemId) {
