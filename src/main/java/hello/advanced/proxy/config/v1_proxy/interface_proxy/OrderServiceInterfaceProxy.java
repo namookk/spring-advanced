@@ -21,6 +21,7 @@ public class OrderServiceInterfaceProxy implements ProxyOrderServiceV1 {
             logTrace.end(status);
         }catch (Exception e){
             logTrace.exception(status, e);
+            throw e;
         }
     }
 }
